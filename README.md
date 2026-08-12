@@ -46,7 +46,8 @@ O projeto explora conceitos relacionados a :
 
 <img width="1942" height="809" alt="ChatGPT Image 12 de ago  de 2026, 14_11_07" src="https://github.com/user-attachments/assets/3b2f47ee-7773-435d-b5a0-7c41d745bf70" />
 
-Essa arquitetura integra três componentes fundamentais:
+
+Essa arquitetura integra três componentes fundamentais :
 
 **Reconhecimento de fala → Inteligência → Síntese de voz**
 
