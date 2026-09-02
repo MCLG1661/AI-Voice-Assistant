@@ -1,266 +1,530 @@
-# 🎙️ Assistente de Voz com IA 
+# 🎙️ AI Voice Assistant
 
-*Speech-to-Text + IA Generativa + Text-to-Speech com Whisper, ChatGPT e gTTS*
+> Assistente conversacional por voz que integra **Speech-to-Text, Inteligência Artificial Generativa e Text-to-Speech** utilizando Python, Whisper, OpenAI e gTTS.
 
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
-![OpenAI](https://img.shields.io/badge/OpenAI-ChatGPT-412991?logo=openai&logoColor=white)
+![OpenAI](https://img.shields.io/badge/OpenAI-Generative%20AI-412991?logo=openai&logoColor=white)
 ![Whisper](https://img.shields.io/badge/Whisper-Speech--to--Text-412991?logo=openai&logoColor=white)
 ![gTTS](https://img.shields.io/badge/gTTS-Text--to--Speech-4285F4?logo=google&logoColor=white)
 ![Google Colab](https://img.shields.io/badge/Google-Colab-F9AB00?logo=googlecolab&logoColor=white)
-![Generative AI](https://img.shields.io/badge/Generative%20AI-Voice%20Assistant-8A2BE2)
+![Voice AI](https://img.shields.io/badge/AI-Voice%20Assistant-8A2BE2)
 ![DIO](https://img.shields.io/badge/DIO-Bradesco%20GenAI-5A0FC8)
 ![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
 
-O **Assistente de Voz com IA** é um projeto desenvolvido para explorar a integração
-entre **reconhecimento de fala, Inteligência Artificial Generativa e síntese de voz**.
+---
 
-A aplicação captura a entrada de áudio do usuário, realiza a transcrição utilizando
-**Whisper**, envia o conteúdo textual para um modelo da OpenAI e converte a resposta
-gerada novamente em áudio utilizando **gTTS**.
+## 📌 Sobre o Projeto
 
-O resultado é um pipeline conversacional capaz de receber e responder interações
-por voz.
+O **AI Voice Assistant** é um assistente conversacional desenvolvido para explorar a integração entre tecnologias de **processamento de voz e Inteligência Artificial Generativa**.
+
+A aplicação transforma a fala do usuário em texto, processa a solicitação utilizando um modelo de linguagem e converte a resposta novamente em áudio.
+
+O fluxo principal é:
+
+```text
+Voz
+ ↓
+Speech-to-Text
+ ↓
+Whisper
+ ↓
+Texto
+ ↓
+LLM / OpenAI
+ ↓
+Resposta
+ ↓
+Text-to-Speech
+ ↓
+gTTS
+ ↓
+Voz
+```
+
+Além do pipeline principal, o projeto explora recursos como **histórico conversacional, cache de respostas, configuração de idioma, detecção de silêncio e interface interativa**.
 
 ---
 
 ## 🎯 Objetivo
 
-Construir um assistente conversacional por voz integrando diferentes tecnologias
-de IA em um único fluxo.
+Construir um protótipo funcional de **Voice AI** integrando diferentes componentes de Inteligência Artificial em um único fluxo conversacional.
 
-O projeto explora conceitos relacionados a :
+O projeto trabalha conceitos relacionados a:
 
 - Speech-to-Text
-- Natural Language Processing
+- Voice AI
 - Inteligência Artificial Generativa
-- APIs de modelos de linguagem
+- Large Language Models
+- Natural Language Processing
 - Text-to-Speech
 - Processamento de áudio
-- Engenharia de prompts
+- Integração com APIs
 - Gerenciamento de contexto
-- Interfaces interativas em notebooks
+- Cache
+- Interfaces interativas
+- Multilinguismo
 
 ---
 
 ## 🧠 Arquitetura
 
-<img width="1942" height="809" alt="ChatGPT Image 12 de ago  de 2026, 14_11_07" src="https://github.com/user-attachments/assets/3b2f47ee-7773-435d-b5a0-7c41d745bf70" />
+```text
+┌─────────────────┐
+│    Usuário      │
+│      🎤         │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Captura de Áudio│
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Detecção de     │
+│ Silêncio / VAD  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│     Whisper     │
+│ Speech-to-Text  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│      Texto      │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Histórico /     │
+│ Contexto / Cache│
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   OpenAI / LLM  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Resposta Textual│
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│      gTTS       │
+│ Text-to-Speech  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Resposta em Voz │
+│       🔊        │
+└─────────────────┘
+```
 
-
-Essa arquitetura integra três componentes fundamentais :
+A arquitetura combina três componentes centrais:
 
 **Reconhecimento de fala → Inteligência → Síntese de voz**
 
 ---
 
-## ✨ Funcionalidades
+# ✨ Funcionalidades
 
-🎤 Captura de Voz
+## 🎤 Captura de Voz
 
-O sistema permite capturar a fala do usuário utilizando o microfone.
+O sistema permite trabalhar com entrada de áudio do usuário para iniciar o fluxo conversacional.
 
-A gravação possui mecanismo de detecção de silêncio para auxiliar no encerramento
-automático da captura.
+O projeto inclui configurações relacionadas a:
 
-📝 Transcrição com Whisper
-
-O áudio capturado é convertido em texto utilizando **Whisper**.
-
-O projeto permite experimentar diferentes modelos de transcrição de acordo com
-os recursos computacionais disponíveis.
-
-🤖 Processamento com IA Generativa
-
-Depois da transcrição, a pergunta é enviada para um modelo da OpenAI.
-
-O histórico da conversa pode ser utilizado para preservar contexto entre
-interações sucessivas.
-
-🔊 Síntese de Voz
-
-A resposta textual é convertida novamente em áudio utilizando **Google Text-to-Speech
-(gTTS)**.
-
-Isso completa o ciclo de interação por voz.
-
-💾 Cache de Respostas
-
-O projeto implementa um mecanismo de cache para reutilizar determinadas respostas
-e reduzir chamadas repetidas ao modelo.
-
-📜 Histórico de Conversa
-
-As interações podem ser mantidas em histórico para preservar contexto durante
-a conversa.
-
-🎛️ Interface Interativa
-
-A experiência utiliza **ipywidgets** para disponibilizar controles diretamente
-no ambiente do notebook.
+- tempo máximo de gravação;
+- nível de ruído;
+- detecção de silêncio;
+- controle do processo de captura.
 
 ---
 
-## 🔄 Pipeline
+## 📝 Speech-to-Text com Whisper
+
+O áudio é convertido em texto utilizando **Whisper**.
+
+A configuração do projeto permite selecionar diferentes modelos:
+
+```text
+tiny
+base
+small
+medium
+large
+```
+
+O notebook utiliza `base` como configuração inicial.
+
+A escolha do modelo envolve um trade-off entre:
+
+```text
+Velocidade ↔ Recursos Computacionais ↔ Qualidade da Transcrição
+```
+
+---
+
+## 🤖 Inteligência Artificial Generativa
+
+Após a transcrição, o texto pode ser enviado para um modelo da OpenAI.
+
+O histórico conversacional é utilizado para fornecer contexto às interações, permitindo que o assistente considere mensagens anteriores ao produzir novas respostas.
+
+---
+
+## 🔊 Text-to-Speech com gTTS
+
+A resposta textual é convertida novamente em áudio utilizando **Google Text-to-Speech (gTTS)**.
+
+O fluxo completo passa a ser:
+
+```text
+Fala do usuário
+      ↓
+Transcrição
+      ↓
+Processamento
+      ↓
+Resposta textual
+      ↓
+Síntese
+      ↓
+Resposta falada
+```
+
+---
+
+## 🌍 Configuração de Idioma
+
+O projeto permite configurar parâmetros relacionados ao idioma utilizado na transcrição e na síntese.
+
+Exemplo:
+
+```python
+CONFIG = {
+    "modelo_whisper": "base",
+    "idioma": "pt",
+    "voz_gtts": "pt-br"
+}
+```
+
+Essa arquitetura permite experimentar diferentes configurações linguísticas suportadas pelos componentes utilizados.
+
+---
+
+## 📦 Cache de Respostas
+
+O projeto implementa uma classe dedicada ao gerenciamento de cache.
+
+A lógica utiliza um hash da pergunta para identificar respostas previamente armazenadas.
+
+Fluxo:
+
+```text
+Pergunta
+   ↓
+Geração de Hash
+   ↓
+Existe no Cache?
+   │
+   ├── Sim → Recupera Resposta
+   │
+   └── Não → Processa com IA
+                  ↓
+             Salva no Cache
+```
+
+O cache é armazenado em arquivos JSON.
+
+Esse mecanismo pode reduzir chamadas repetidas ao modelo em perguntas idênticas.
+
+---
+
+## 💬 Histórico Conversacional
+
+O projeto implementa gerenciamento de histórico para preservar contexto entre mensagens.
+
+O histórico trabalha com papéis como:
+
+```text
+system
+user
+assistant
+```
+
+Também existe controle da quantidade de mensagens preservadas para limitar o contexto utilizado.
+
+O histórico pode ser armazenado em JSON para reutilização posterior.
+
+---
+
+## 🎛️ Interface Interativa
+
+A interface é construída com **ipywidgets** dentro do ambiente de notebook.
+
+Entre os componentes utilizados estão controles para:
+
+- iniciar gravação;
+- interromper gravação;
+- processar interação;
+- exibir pergunta;
+- apresentar resposta.
+
+Isso permite experimentar o assistente diretamente no ambiente interativo.
+
+---
+
+## 🔄 Pipeline Completo
 
 ```text
 Microfone
    ↓
 Captura de Áudio
    ↓
-VAD / Detecção de Silêncio
+Detecção de Silêncio
    ↓
 Whisper
    ↓
+Speech-to-Text
+   ↓
 Transcrição
+   ↓
+Cache
    ↓
 Histórico / Contexto
    ↓
-OpenAI
+OpenAI / LLM
    ↓
 Resposta
    ↓
 gTTS
    ↓
+Text-to-Speech
+   ↓
 Áudio
    ↓
-Reprodução
-
+Usuário
 ```
-
----
-
-## 🌍 Suporte a Idiomas
-
-A arquitetura permite configurar diferentes idiomas para transcrição e síntese
-de voz.
-
-Isso possibilita experimentar o assistente em diferentes cenários linguísticos,
-dependendo da configuração utilizada para Whisper e gTTS.
-
----
-
-## ⚙️ Modelos Whisper
-
-O projeto permite experimentar diferentes tamanhos de modelos Whisper:
-
-- `tiny`
-- `base`
-- `small`
-- `medium`
-- `large`
-
-A escolha envolve um trade-off entre :
-
-**Recursos computacionais ↔ velocidade ↔ qualidade da transcrição**
-
-Modelos maiores normalmente demandam mais memória e processamento, enquanto
-modelos menores são mais adequados para experimentação rápida.
 
 ---
 
 ## 🛠️ Tecnologias
 
-**Python** - Linguagem principal
+| Tecnologia | Aplicação |
+|---|---|
+| **Python** | Linguagem principal |
+| **Whisper** | Speech-to-Text |
+| **OpenAI API** | Processamento generativo |
+| **gTTS** | Text-to-Speech |
+| **ipywidgets** | Interface interativa |
+| **Google Colab** | Ambiente de desenvolvimento |
+| **JSON** | Cache e histórico |
+| **Git** | Versionamento |
+| **GitHub** | Repositório e documentação |
 
-**Whisper** - Reconhecimento e transcrição de fala
-
-**OpenAI API** - Geração das respostas
-
-**gTTS** - Conversão de texto em áudio
-
-**ipywidgets** - Interface interativa
-
-**Google Colab** - Ambiente de desenvolvimento e execução
-
-**JSON** - Armazenamento de informações e histórico
+O notebook também utiliza bibliotecas auxiliares para manipulação e processamento de áudio.
 
 ---
 
 ## 📂 Estrutura do Repositório
 
 ```text
-Assistente-de-Voz-com-IA-ChatGPT-Whisper-gTTS/
+AI-Voice-Assistant/
 │
-├── Assistente_de_Voz_Multi_Idiomas_com_Whisper_e_ChatGPT.ipynb
+├── notebooks/
+│   └── ai-voice-assistant.ipynb
+│
 └── README.md
-
 ```
 
 ---
 
-## ▶️ Como Executar
+# ▶️ Como Executar
 
-### Pré-requisitos
+## Pré-requisitos
 
 Para executar o projeto são necessários:
 
-- Google Colab
-- Microfone
-- Credenciais/API necessárias para utilização do modelo
-
-### Execução
-
-1. Abra o notebook no Google Colab
-2. Execute as células de instalação e configuração
-3. Configure as credenciais necessárias
-4. Execute as células do assistente
-5. Autorize o acesso ao microfone
-6. Utilize a interface para iniciar uma interação
-
-> Nunca publique chaves de API diretamente no notebook ou no repositório.
+- Google Colab ou ambiente compatível;
+- microfone;
+- acesso às dependências utilizadas;
+- credenciais necessárias para utilização da API da OpenAI.
 
 ---
 
-## 🔐 Segurança das Credenciais
+### 1. Clone o repositório
 
-Credenciais e chaves de API devem ser armazenadas utilizando mecanismos seguros,
-como variáveis de ambiente ou gerenciamento de secrets.
+```bash
+git clone https://github.com/MCLG1661/AI-Voice-Assistant.git
+cd AI-Voice-Assistant
+```
 
-Nunca utilize :
+### 2. Abra o notebook
 
+Utilize:
+
+```text
+notebooks/ai-voice-assistant.ipynb
+```
+
+O projeto foi estruturado para experimentação em ambiente de notebook.
+
+### 3. Instale as dependências
+
+O próprio notebook contém comandos para instalação das bibliotecas necessárias.
+
+Entre elas:
+
+```text
+openai
+openai-whisper
+gtts
+pydub
+ipywidgets
+sounddevice
+numpy
+scipy
+webrtcvad
+```
+
+### 4. Configure a credencial
+
+O notebook utiliza o mecanismo de secrets do Google Colab para recuperar:
+
+```text
+OPENAI_API_KEY
+```
+
+Configure a credencial antes de executar as funcionalidades que dependem da API.
+
+### 5. Execute as células
+
+Execute o notebook na ordem apresentada para:
+
+```text
+Instalar dependências
+        ↓
+Carregar configurações
+        ↓
+Inicializar Whisper
+        ↓
+Configurar cache
+        ↓
+Configurar histórico
+        ↓
+Inicializar interface
+        ↓
+Executar o assistente
+```
+
+---
+
+# 🔐 Segurança das Credenciais
+
+Chaves de API **não devem ser armazenadas diretamente no código ou publicadas no GitHub**.
+
+O notebook utiliza:
+
+```python
+from google.colab import userdata
+
+openai.api_key = userdata.get("OPENAI_API_KEY")
+```
+
+Esse padrão permite manter a credencial fora do código versionado.
+
+Nunca utilize em um repositório público:
+
+```python
 API_KEY = "minha-chave-real"
-
-em código enviado para um repositório público.
+```
 
 ---
 
 ## 💡 Competências Demonstradas
 
-- Python
-- Inteligência Artificial Generativa
+### Inteligência Artificial
+
+- Generative AI
+- Large Language Models
+- Natural Language Processing
+- Voice AI
+- Prompt Engineering
+- Context Management
+
+### Speech & Audio
+
 - Speech-to-Text
 - Whisper
 - Text-to-Speech
 - gTTS
-- Integração com APIs
 - Processamento de áudio
-- Natural Language Processing
-- Prompt Engineering
-- Gerenciamento de contexto
+- Detecção de silêncio
+
+### Python
+
+- Classes
+- Manipulação de arquivos
+- JSON
+- Hashing
+- Configuração
+- Integração de bibliotecas
+- Integração com APIs
+
+### Arquitetura
+
+- Pipeline de IA
 - Cache
-- Desenvolvimento em Google Colab
-- Integração de componentes de IA
+- Histórico conversacional
+- Separação de componentes
+- Gerenciamento de credenciais
+- Interface interativa
 
 ---
 
-## 🚀 Possíveis Evoluções
+## 💼 Aplicações Potenciais
 
-O projeto pode evoluir para uma arquitetura mais completa de Voice AI :
+A arquitetura demonstrada pode ser utilizada como base conceitual para diferentes soluções.
 
-- Interface web independente do notebook
-- Streaming de áudio
-- Respostas em tempo real
-- Detecção automática de idioma
-- Tradução entre idiomas
-- Memória conversacional persistente
-- Backend com API
-- Containerização
-- Deploy em Cloud
-- Observabilidade
-- Avaliação de latência e qualidade
-- Arquitetura modular para diferentes provedores de STT, LLM e TTS
+### Atendimento
 
-Uma evolução arquitetural poderia assumir o formato :
+```text
+Cliente
+   ↓
+Voz
+   ↓
+Assistente
+   ↓
+Resposta
+```
+
+### Customer Service
+
+- FAQ por voz;
+- triagem inicial;
+- atendimento automatizado;
+- suporte conversacional.
+
+### Produtividade
+
+- assistentes pessoais;
+- consultas por voz;
+- captura de informações;
+- interfaces hands-free.
+
+### Acessibilidade
+
+Interfaces de voz também podem ampliar possibilidades de interação para cenários em que interfaces tradicionais não são adequadas.
+
+### Empresas
+
+A arquitetura pode evoluir para integrar:
 
 ```text
 Voz
@@ -269,48 +533,119 @@ STT
  ↓
 LLM
  ↓
-Ferramentas / APIs
+CRM / ERP / APIs / Knowledge Base
  ↓
-Resposta
+LLM
  ↓
 TTS
  ↓
 Voz
-
 ```
+
+---
+
+## 🚀 Possíveis Evoluções
+
+### Voice AI
+
+- streaming de áudio;
+- respostas em tempo real;
+- redução de latência;
+- interrupção da resposta pelo usuário;
+- detecção automática de idioma.
+
+### Inteligência
+
+- RAG;
+- memória persistente;
+- integração com bases de conhecimento;
+- function calling;
+- agentes;
+- ferramentas externas.
+
+### Arquitetura
+
+- backend com FastAPI;
+- API REST;
+- WebSocket;
+- arquitetura modular;
+- containerização com Docker;
+- deploy em Cloud.
+
+### Interface
+
+- aplicação web;
+- aplicação mobile;
+- Streamlit;
+- interface independente do notebook.
+
+### Engenharia
+
+- logging;
+- observabilidade;
+- testes automatizados;
+- tratamento de falhas;
+- métricas de latência;
+- avaliação da qualidade das respostas.
+
+Uma possível evolução arquitetural seria:
+
+```text
+Frontend de Voz
+       ↓
+Streaming
+       ↓
+Speech-to-Text
+       ↓
+Orquestrador
+       ↓
+LLM + RAG + Tools
+       ↓
+Text-to-Speech
+       ↓
+Streaming de Áudio
+       ↓
+Usuário
+```
+
+---
+
+## ⚠️ Limitações
+
+Este projeto possui finalidade **educacional e demonstrativa**.
+
+A implementação utiliza um notebook como ambiente principal e não representa uma arquitetura de Voice AI pronta para produção.
+
+Entre as limitações estão:
+
+- dependência do ambiente de notebook;
+- ausência de backend dedicado;
+- ausência de streaming de áudio em tempo real;
+- latência entre as diferentes etapas;
+- ausência de observabilidade de produção;
+- ausência de testes automatizados;
+- dependência de serviços externos para determinadas funcionalidades.
+
+Essas limitações representam também oportunidades naturais para evolução do projeto.
+
 ---
 
 ## 🎓 Contexto Acadêmico
 
-Projeto desenvolvido durante o **Bootcamp GenAI — DIO / Bradesco**, no módulo
-**Os Pilares Formais da IA**.
+Projeto desenvolvido durante o **Bootcamp GenAI — DIO / Bradesco**, no módulo **Os Pilares Formais da IA**.
 
-O desafio proporcionou uma experiência prática de integração entre tecnologias
-de reconhecimento de fala, modelos generativos e síntese de voz.
+O desafio proporcionou uma experiência prática de integração entre tecnologias de reconhecimento de fala, Inteligência Artificial Generativa e síntese de voz.
+
+**Professor:** Diego Renan Bruno
 
 ---
 
-## 🤝 Como Contribuir
+## 🙏 Agradecimentos
 
-Contribuições são bem-vindas, especialmente em áreas relacionadas a:
-
-- Speech-to-Text
-- Text-to-Speech
-- Voice AI
-- Interfaces
-- Multilinguismo
-- Otimização de latência
-- APIs
-- Arquitetura de IA
-
-Para contribuir:
-
-1. Faça um Fork do repositório
-2. Crie uma branch para sua funcionalidade
-3. Implemente e teste as alterações
-4. Faça o commit
-5. Envie a branch
-6. Abra um Pull Request descrevendo a melhoria
+- DIO e Bradesco pelo Bootcamp GenAI;
+- Prof. Diego Renan Bruno pelo conteúdo do módulo;
+- OpenAI pelas tecnologias utilizadas no projeto;
+- Google pelo gTTS e ambiente Google Colab.
 
 ---
 
@@ -320,23 +655,11 @@ Para contribuir:
 
 Marketing | Data Science | Inteligência Artificial | Gestão de Projetos
 
-GitHub: MCLG1661
-
-LinkedIn: Marcus Guedes
+- **GitHub:** [MCLG1661](https://github.com/MCLG1661)
+- **LinkedIn:** [Marcus Guedes](https://www.linkedin.com/in/marcusguedes/)
 
 ---
 
+⭐ Se este projeto foi útil como referência para Voice AI ou Inteligência Artificial Generativa, considere deixar uma estrela no repositório.
+
 🎙️ **Transformando voz em texto, texto em inteligência e inteligência novamente em voz.**
-
-## 🙏 Agradecimentos
-
-- OpenAI pelo Whisper e ChatGPT
-- Google pelo gTTS
-- Comunidade do Google Colab pela infraestrutura
-- Prof. Diego Renan Bruno - Bootcamp GenAI DIO/Bradesco - Módulo : OS PILARES FORMAIS DA IA
-
-## Autor
-
-- Marcus Guedes
-- Linkedin : https://www.linkedin.com/in/marcusguedes/
-- GitHub :  https://github.com/MCLG1661
