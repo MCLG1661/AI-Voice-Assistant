@@ -13,6 +13,12 @@
 
 ---
 
+## Extensão profissional — Agent Skill
+
+O [Voice AI Pipeline Architect na Agensi](https://www.agensi.io/skills/voice-ai-pipeline-architect) é um recurso complementar de orientação para arquitetura, diagnóstico e revisão de pipelines de voz. É uma skill de instruções e referências, não um serviço de áudio em execução nem uma integração automática com este notebook.
+
+---
+
 ## 📌 Sobre o Projeto
 
 O **AI Voice Assistant** é um assistente conversacional desenvolvido para explorar a integração entre tecnologias de **processamento de voz e Inteligência Artificial Generativa**.
