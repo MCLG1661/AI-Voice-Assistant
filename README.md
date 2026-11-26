@@ -228,14 +228,14 @@ Essa arquitetura permite experimentar diferentes configurações linguísticas s
 
 O projeto implementa uma classe dedicada ao gerenciamento de cache.
 
-A lógica utiliza um hash da pergunta para identificar respostas previamente armazenadas.
+A lógica utiliza um hash da pergunta e do histórico conversacional anterior para identificar respostas previamente armazenadas no mesmo contexto.
 
 Fluxo:
 
 ```text
 Pergunta
    ↓
-Geração de Hash
+Geração de Hash (pergunta + contexto)
    ↓
 Existe no Cache?
    │
@@ -248,7 +248,7 @@ Existe no Cache?
 
 O cache é armazenado em arquivos JSON.
 
-Esse mecanismo pode reduzir chamadas repetidas ao modelo em perguntas idênticas.
+Esse mecanismo pode reduzir chamadas repetidas ao modelo em perguntas idênticas com o mesmo contexto.
 
 ---
 
@@ -357,7 +357,8 @@ AI-Voice-Assistant/
 
 Para executar o projeto são necessários:
 
-- Google Colab ou ambiente compatível;
+- Google Colab para configuração e experimentação, ou ambiente compatível;
+- Para gravação com SoundDevice, o runtime Python precisa ter acesso a um dispositivo de áudio local. O Colab hospedado não acessa diretamente o microfone do navegador por SoundDevice; a captura completa não é garantida nesse ambiente. Em runtime local, adapte a obtenção da credencial ao mecanismo de secrets disponível;
 - microfone;
 - acesso às dependências utilizadas;
 - credenciais necessárias para utilização da API da OpenAI.
@@ -440,7 +441,9 @@ O notebook utiliza:
 ```python
 from google.colab import userdata
 
-openai.api_key = userdata.get("OPENAI_API_KEY")
+from openai import OpenAI
+
+client = OpenAI(api_key=userdata.get("OPENAI_API_KEY"))
 ```
 
 Esse padrão permite manter a credencial fora do código versionado.

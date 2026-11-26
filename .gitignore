@@ -1,0 +1,8 @@
+cache/
+historico/
+*.wav
+*.mp3
+.env
+.env.*
+.ipynb_checkpoints/
+__pycache__/
